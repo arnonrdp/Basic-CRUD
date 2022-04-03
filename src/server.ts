@@ -8,8 +8,17 @@ app.get("/users", (request, response) => {
   return response.json({ perPage, currentPage });
 });
 
+
+/**
+ * Exemplo de Body de requisição:
+ * {
+ *   "name": "Arnon Rodrigues",
+ *   "email": "arnonrdp@gmail.com"
+ * }
+ */
 app.post("/users", (request, response) => {
-  return response.json({ message: "Criando usuário" });
+  const { body } = request;
+  return response.json(body);
 });
 
 app.put("/users", (request, response) => {
