@@ -1,14 +1,21 @@
 import express from "express";
+import { v4 as uuid } from "uuid";
 
 const app = express();
 
 app.use(express.json());
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+const users: User[] = [];
 
 app.get("/users", (request, response) => {
-  const { perPage, currentPage } = request.query;
-  console.log(perPage, currentPage);
-  return response.json({ perPage, currentPage });
+  // Busca e retorna todos os usuários
+  return response.json(users);
 });
 
 
@@ -20,15 +27,19 @@ app.get("/users", (request, response) => {
  * }
  */
 app.post("/users", (request, response) => {
-  const { body } = request;
-  return response.json(body);
+  // Recebe os dados do novo usuário
+  const { name, email } = request.body;
+
+  // Cria um novo usuário
+  const user = { id: uuid(), name, email };
+
+  //Registra esse usuário da base de dados
+  users.push(user);
+
+  // Retorna os dados do usuário criado
+  return response.json(user);
 });
 
-
-/**
- * Exemplo de Rota com Query Params:
- * http://localhost:3333/users?perPage=10&currentPage=1
- */
 app.put("/users/:id", (request, response) => {
   const { id } = request.params;
   return response.json("Atualizando usuário: " + id);
